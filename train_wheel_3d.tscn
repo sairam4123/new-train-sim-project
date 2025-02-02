@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bfxq52pr6kpcg"]
+
+[node name="TrainWheel3D" type="Node3D"]
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
+polygon = PackedVector2Array(0.275, 0, 0.213621, 0.288158, 0.492289, 0.136654, 0.801414, 0.0545769)
+mode = 1
+spin_degrees = 360.0
+spin_sides = 48

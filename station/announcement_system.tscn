@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://bquafk7fqjdfi"]
+
+[ext_resource type="AudioStream" uid="uid://dg3ey1ksro12n" path="res://train_announcements/vm/vm_ann.mp3" id="1_c2gcr"]
+[ext_resource type="AudioStream" uid="uid://b68v0ccxpfe4o" path="res://train_announcements/vm/vm_ann_2.mp3" id="2_e81y8"]
+[ext_resource type="AudioStream" uid="uid://dj31c2npvd1fn" path="res://train_announcements/vm/vm_ann_3.mp3" id="3_ctu3p"]
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_elfb6"]
+stream_count = 6
+stream_0 = ExtResource("1_c2gcr")
+stream_1 = ExtResource("1_c2gcr")
+stream_2 = ExtResource("2_e81y8")
+stream_3 = ExtResource("2_e81y8")
+stream_4 = ExtResource("3_ctu3p")
+stream_5 = ExtResource("3_ctu3p")
+
+[node name="AnnouncementSystem" type="Node3D"]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamPlaylist_elfb6")
+bus = &"Station Bus"

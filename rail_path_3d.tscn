@@ -1,0 +1,64 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnbl2yk81aghf"]
+
+[ext_resource type="Script" uid="uid://j6htunt5fs6p" path="res://rail_path_3d.gd" id="1_7fptr"]
+[ext_resource type="Texture2D" uid="uid://60l8gh8clui1" path="res://rails.png" id="2_0msx3"]
+
+[sub_resource type="Curve3D" id="Curve3D_7fptr"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -5),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tjjqi"]
+albedo_texture = ExtResource("2_0msx3")
+uv1_scale = Vector3(0.45, 5.15, 0)
+uv1_offset = Vector3(0, 0.37, 0)
+
+[node name="RailPath3D" type="Path3D"]
+curve = SubResource("Curve3D_7fptr")
+script = ExtResource("1_7fptr")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.195208, 0, 0)
+polygon = PackedVector2Array(0.752664, 0.305985, 0.907, 0.309, 0.861061, 0.239458, 0.86245, 0.183962, 0.865, 0.107, 0.86834, 0.0315545, 0.981, 0, 0.825, -0.001, 0.667, -0.001, 0.806, 0.031, 0.805, 0.105, 0.808, 0.187, 0.799866, 0.239321)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_rotation_accurate = false
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+
+[node name="CSGPolygon3D2" type="CSGPolygon3D" parent="."]
+polygon = PackedVector2Array(-0.611, 0.307, -0.754, 0.309, -0.709, 0.242, -0.712, 0.184, -0.712, 0.107, -0.716, 0.028, -0.828, 0, -0.672, -0.001, -0.514, -0.001, -0.653, 0.031, -0.652, 0.105, -0.655, 0.187, -0.648, 0.247)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_rotation_accurate = false
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+
+[node name="CSGPolygon3D3" type="CSGPolygon3D" parent="."]
+polygon = PackedVector2Array(-1.2, 0, 0, -0.008, 1.2, 0)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_rotation_accurate = false
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = SubResource("StandardMaterial3D_tjjqi")

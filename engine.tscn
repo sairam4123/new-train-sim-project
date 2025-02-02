@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://dg0d23vdkllhp"]
+
+[ext_resource type="Script" uid="uid://dchkwg5h2jl1k" path="res://engine.gd" id="1_xrjxd"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_b8gpd"]
+height = 12.0
+
+[node name="Locomotive" type="Node3D"]
+script = ExtResource("1_xrjxd")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.02771)
+size = Vector3(1, 1, 4.28149)
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.891236)
+
+[node name="Camera3D" type="Camera3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 2.5, 2.5)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Node3D"]
+shape = SubResource("CapsuleShape3D_b8gpd")
+spring_length = 12.0
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.690939, -2)
+billboard = 1
+text = "Locomotive"

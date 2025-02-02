@@ -1,0 +1,149 @@
+[gd_scene load_steps=11 format=3 uid="uid://trhss6uhisaj"]
+
+[ext_resource type="PackedScene" uid="uid://bnbl2yk81aghf" path="res://rail_path_3d.tscn" id="1_fj7yv"]
+[ext_resource type="Script" uid="uid://haityqetj72b" path="res://rail_wagon_3d.gd" id="2_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://dg0d23vdkllhp" path="res://engine.tscn" id="2_tlwt5"]
+[ext_resource type="Script" uid="uid://bexwge6ixmrj2" path="res://debug_label.gd" id="4_aqk2v"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tlwt5"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_aqk2v"]
+sky_material = SubResource("ProceduralSkyMaterial_tlwt5")
+
+[sub_resource type="Environment" id="Environment_036b0"]
+background_mode = 2
+sky = SubResource("Sky_aqk2v")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cmany"]
+albedo_color = Color(0.23904, 0.24, 0.2256, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_c6gwx"]
+material = SubResource("StandardMaterial3D_cmany")
+size = Vector3(1024, 0.01, 1024)
+
+[sub_resource type="Curve3D" id="Curve3D_c6gwx"]
+closed = true
+_data = {
+"points": PackedVector3Array(-23.4805, -0.650204, 13.8171, 23.4805, 0.650204, -13.8171, -405.4, 9.76585e-06, -407.234, -72.9754, 0, -0.199951, 72.9754, 0, 0.199951, -225.461, 4.3347, -408.567, -61.5793, 0.650204, -0.599698, 61.5793, -0.650204, 0.599698, 81.1028, 9.76585e-06, -405.901, -39.7866, 0, -1.7994, 39.7866, 0, 1.7994, 185.068, 9.76585e-06, -404.569, -27.7907, 0, -9.99675, 27.7907, 0, 9.99675, 346.347, 9.76585e-06, -393.905, -3.5988, 0, -18.3938, 3.5988, 0, 18.3938, 370.339, 9.76585e-06, -337.924, 2.39925, 0, -22.7922, -2.39925, 0, 22.7922, 370.339, 9.76585e-06, -271.28, 1.1997, 0, -25.3914, -1.1997, 0, 25.3914, 354.344, 9.76585e-06, -185.976, -1.99935, 0, -20.5931, 1.99935, 0, 20.5931, 362.341, 9.76585e-06, -102.004, -1.7994, 0, -14.995, 1.7994, 0, 14.995, 367.673, 9.76585e-06, -48.6884, -2.39925, 0, -15.1949, 2.39925, 0, 15.1949, 374.337, 9.76585e-06, -2.03745, -1.1997, 0, -16.3945, 1.1997, 0, 16.3945, 383.668, 9.76585e-06, 52.6108, -4.46085, 0, -14.2893, 4.46085, 0, 14.2893, 382.335, 9.76585e-06, 107.259, -5.86035, 0, -14.8892, 5.86035, 0, 14.8892, 413.407, 9.76585e-06, 147.873, 2.59905, 0, -26.5911, -2.59905, 0, 26.5911, 421.404, 9.76585e-06, 206.52, 30.3897, 0, -19.3935, -30.3897, 0, 19.3935, 396.08, 9.76585e-06, 325.147, 62.579, 0, 1.7994, -62.579, 0, -1.7994, 218.806, 9.76585e-06, 335.81, 64.1784, 0, 11.796, -64.1784, 0, -11.796, -21.1133, 9.76585e-06, 313.151, 48.5836, 0, 33.1889, -48.5836, 0, -33.1889, -209.05, 9.76585e-06, 257.17, 18.5937, 0, 39.9866, -18.5937, 0, -39.9866, -345.004, 9.76585e-06, 91.8919, -1.64835, 0, 26.6634, 1.64835, 0, -26.6634, -333.008, 9.76585e-06, -9.40733, 6.54885, 0, 27.2632, -6.54885, 0, -27.2632, -334.015, 9.76585e-06, -85.8639, 6.7977, 0, 28.1906, -6.7977, 0, -28.1906, -376.667, 9.76585e-06, -191.162, 0.799649, 0, 18.7937, -0.799649, 0, -18.7937, -379.333, 9.76585e-06, -273.801, 3.91005, 0, 20.015, -3.91005, 0, -20.015, -381.998, 9.76585e-06, -316.453),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 25
+
+[node name="World" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_036b0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Terrain" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_c6gwx")
+
+[node name="RailPath" parent="." instance=ExtResource("1_fj7yv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+curve = SubResource("Curve3D_c6gwx")
+auto_tangents_enabled = true
+auto_tangents_scale = 0.15
+bake_curvature = true
+
+[node name="Loco" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("next_coach")]
+transform = Transform3D(0.507157, -0.0205626, -0.861608, -9.31323e-10, 0.999701, -0.0238589, 0.861854, 0.0121, 0.507012, -405.423, 1.12469, -407.22)
+v_offset = 1.125
+script = ExtResource("2_aqk2v")
+mass_kg = 123000.0
+power_output_hp = 6350.0
+next_coach = NodePath("../Coach1")
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Loco"]
+remote_path = NodePath("../../../Train/Locomotive")
+
+[node name="Coach1" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach", "next_coach")]
+transform = Transform3D(0.781438, -0.0187403, -0.623698, 0.00802639, 0.999751, -0.0199841, 0.623929, 0.0106102, 0.781406, -409.2, 1.01347, -403.986)
+progress = 2854.19
+v_offset = 1.125
+script = ExtResource("2_aqk2v")
+power_output_hp = 0.0
+starting_tractive_effort = 0.0
+power_efficiency = 0.0
+prev_coach = NodePath("../Loco")
+next_coach = NodePath("../Coach2")
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach1"]
+remote_path = NodePath("../../../Train/Coach")
+
+[node name="Coach2" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach")]
+transform = Transform3D(0.957672, -0.0175196, -0.287313, 0.0143596, 0.999777, -0.013104, 0.28749, 0.0084234, 0.95774, -411.602, 0.925661, -399.315)
+progress = 2848.9
+v_offset = 1.125
+script = ExtResource("2_aqk2v")
+power_output_hp = 0.0
+starting_tractive_effort = 0.0
+power_efficiency = 0.0
+prev_coach = NodePath("../Coach1")
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach2"]
+remote_path = NodePath("../../../Train/Coach2")
+
+[node name="Train" type="Node3D" parent="."]
+
+[node name="Locomotive" parent="Train" instance=ExtResource("2_tlwt5")]
+transform = Transform3D(0.507157, -0.0205626, -0.861608, -9.31323e-10, 0.999701, -0.0238589, 0.861854, 0.0121, 0.507012, -405.423, 1.13469, -407.22)
+
+[node name="Coach" parent="Train" instance=ExtResource("2_tlwt5")]
+transform = Transform3D(0.781438, -0.0187403, -0.623698, 0.00802639, 0.999751, -0.0199841, 0.623929, 0.0106102, 0.781406, -409.2, 1.02347, -403.986)
+
+[node name="Coach2" parent="Train" instance=ExtResource("2_tlwt5")]
+transform = Transform3D(0.957672, -0.0175196, -0.287313, 0.0143596, 0.999777, -0.013104, 0.28749, 0.0084234, 0.95774, -411.602, 0.935661, -399.315)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+offset_right = 360.0
+offset_bottom = 240.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/MarginContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/PanelContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "DEBUG"
+horizontal_alignment = 1
+
+[node name="DebugLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_aqk2v")
