@@ -53,7 +53,8 @@ auto_tangents_scale = 0.15
 bake_curvature = true
 
 [node name="Loco" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("next_coach")]
-transform = Transform3D(0.507157, -0.0205626, -0.861608, -9.31323e-10, 0.999701, -0.0238589, 0.861854, 0.0121, 0.507012, -405.423, 1.12469, -407.22)
+transform = Transform3D(0.122323, -0.0336226, -0.991919, -0.0122773, 0.999284, -0.0353872, 0.992414, 0.0165066, 0.121825, -386.29, 1.76841, -412.496)
+progress = 20.0
 v_offset = 1.125
 script = ExtResource("2_aqk2v")
 mass_kg = 123000.0
@@ -64,8 +65,8 @@ next_coach = NodePath("../Coach1")
 remote_path = NodePath("../../../Train/Locomotive")
 
 [node name="Coach1" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach", "next_coach")]
-transform = Transform3D(0.781438, -0.0187403, -0.623698, 0.00802639, 0.999751, -0.0199841, 0.623929, 0.0106102, 0.781406, -409.2, 1.01347, -403.986)
-progress = 2854.19
+transform = Transform3D(0.17151, -0.0324331, -0.984645, -0.0105949, 0.999322, -0.0347629, 0.985124, 0.0163942, 0.171053, -391.232, 1.59284, -411.77)
+progress = 15.0
 v_offset = 1.125
 script = ExtResource("2_aqk2v")
 power_output_hp = 0.0
@@ -77,29 +78,46 @@ next_coach = NodePath("../Coach2")
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach1"]
 remote_path = NodePath("../../../Train/Coach")
 
-[node name="Coach2" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach")]
-transform = Transform3D(0.957672, -0.0175196, -0.287313, 0.0143596, 0.999777, -0.013104, 0.28749, 0.0084234, 0.95774, -411.602, 0.925661, -399.315)
-progress = 2848.9
+[node name="Coach2" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach", "next_coach")]
+transform = Transform3D(0.240774, -0.0303796, -0.970098, -0.00824401, 0.999376, -0.0333443, 0.970542, 0.0160256, 0.240381, -396.121, 1.42221, -410.753)
+progress = 10.0
 v_offset = 1.125
 script = ExtResource("2_aqk2v")
 power_output_hp = 0.0
 starting_tractive_effort = 0.0
 power_efficiency = 0.0
 prev_coach = NodePath("../Coach1")
+next_coach = NodePath("../Coach3")
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach2"]
 remote_path = NodePath("../../../Train/Coach2")
 
+[node name="Coach3" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach")]
+transform = Transform3D(0.344054, -0.0268307, -0.93856, -0.00485751, 0.999493, -0.0303548, 0.938934, 0.0150024, 0.34376, -400.9, 1.26217, -409.312)
+progress = 5.0
+v_offset = 1.125
+script = ExtResource("2_aqk2v")
+power_output_hp = 0.0
+starting_tractive_effort = 0.0
+power_efficiency = 0.0
+prev_coach = NodePath("../Coach2")
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach3"]
+remote_path = NodePath("../../../Train/Coach3")
+
 [node name="Train" type="Node3D" parent="."]
 
 [node name="Locomotive" parent="Train" instance=ExtResource("2_tlwt5")]
-transform = Transform3D(0.507157, -0.0205626, -0.861608, -9.31323e-10, 0.999701, -0.0238589, 0.861854, 0.0121, 0.507012, -405.423, 1.13469, -407.22)
+transform = Transform3D(0.122323, -0.0336226, -0.991919, -0.0122773, 0.999284, -0.0353872, 0.992414, 0.0165066, 0.121825, -386.29, 1.77841, -412.496)
 
 [node name="Coach" parent="Train" instance=ExtResource("2_tlwt5")]
-transform = Transform3D(0.781438, -0.0187403, -0.623698, 0.00802639, 0.999751, -0.0199841, 0.623929, 0.0106102, 0.781406, -409.2, 1.02347, -403.986)
+transform = Transform3D(0.17151, -0.0324331, -0.984645, -0.0105949, 0.999322, -0.0347629, 0.985124, 0.0163942, 0.171053, -391.232, 1.60284, -411.77)
 
 [node name="Coach2" parent="Train" instance=ExtResource("2_tlwt5")]
-transform = Transform3D(0.957672, -0.0175196, -0.287313, 0.0143596, 0.999777, -0.013104, 0.28749, 0.0084234, 0.95774, -411.602, 0.935661, -399.315)
+transform = Transform3D(0.240774, -0.0303796, -0.970098, -0.00824401, 0.999376, -0.0333443, 0.970542, 0.0160256, 0.240381, -396.121, 1.43221, -410.753)
+
+[node name="Coach3" parent="Train" instance=ExtResource("2_tlwt5")]
+transform = Transform3D(0.344054, -0.0268307, -0.93856, -0.00485751, 0.999493, -0.0303548, 0.938934, 0.0150024, 0.34376, -400.9, 1.27217, -409.312)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

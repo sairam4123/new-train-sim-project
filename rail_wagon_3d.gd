@@ -35,25 +35,25 @@ func _physics_process(delta: float) -> void:
 	var net_forces = long_forces + coup_forces
 	var acceleration = net_forces / mass_kg
 	velocity += acceleration * delta
-	velocity = max(velocity, 1e-6)
+	velocity = max(velocity, 1e-4)
 	progress += velocity * delta
 
 func _update_coupling_forces(delta: float) -> float:
 	var force = 0.0
 	
-	var k = 10_000.0  # Reduced spring constant (N/m)
-	var c = 500.0    # Reduced damping coefficient (N·s/m)
-	var rest_length = 20.0  # Rest length of the coupler (m)
+	var k = 500_000.0  # Reduced spring constant (N/m)aad
+	var c = 1_000.0    # Reduced damping coefficient (N·s/m)
+	var rest_length = 5.0  # Rest length of the coupler (m)
 	
 	# Calculate forces from the previous coach
 	if prev_coach:
-		var displacement = progress - prev_coach.progress - rest_length
+		var displacement = (prev_coach.global_position - global_position).length() - rest_length
 		var relative_velocity = velocity - prev_coach.velocity
-		force += -k * displacement - c * relative_velocity
+		force -= -k * displacement - c * relative_velocity
 	
 	# Calculate forces from the next coach
 	if next_coach:
-		var displacement = next_coach.progress - progress - rest_length
+		var displacement = (global_position - next_coach.global_position).length() - rest_length
 		var relative_velocity = next_coach.velocity - velocity
 		force += -k * displacement - c * relative_velocity
 		
