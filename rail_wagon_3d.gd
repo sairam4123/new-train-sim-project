@@ -35,28 +35,28 @@ func _physics_process(delta: float) -> void:
 	var net_forces = long_forces + coup_forces
 	var acceleration = net_forces / mass_kg
 	velocity += acceleration * delta
-	velocity = max(velocity, 1e-6)
+	#velocity = max(velocity, 1e-6)
+	velocity = max(velocity, 0)
 	progress += velocity * delta
 
 func _update_coupling_forces(delta: float) -> float:
 	var force = 0.0
 	
-	var k = 10_000.0  # Reduced spring constant (N/m)
-	var c = 500.0    # Reduced damping coefficient (N·s/m)
-	var rest_length = 20.0  # Rest length of the coupler (m)
+	var k = 500_000.0  # Reduced spring constant (N/m)
+	var c = 1_000.0    # Reduced damping coefficient (N·s/m)
+	var rest_length = 5.0  # Rest length of the coupler (m)
 	
 	# Calculate forces from the previous coach
 	if prev_coach:
-		var displacement = progress - prev_coach.progress - rest_length
+		var displacement = prev_coach.progress - progress - rest_length
 		var relative_velocity = velocity - prev_coach.velocity
-		force += -k * displacement - c * relative_velocity
+		force -= -k * displacement - c * relative_velocity
 	
 	# Calculate forces from the next coach
 	if next_coach:
-		var displacement = next_coach.progress - progress - rest_length
+		var displacement = progress - next_coach.progress - rest_length
 		var relative_velocity = next_coach.velocity - velocity
 		force += -k * displacement - c * relative_velocity
-		
 	
 	# Clamp velocity to prevent runaway values
 	#velocity = clamp(velocity, -100.0, 100.0)  # Adjust limits as needed
@@ -79,7 +79,6 @@ func _update_longitudinal(delta: float) -> float:
 	else:
 		# Dynamic case: power-limited tractive effort
 		engine_force = min(effective_power / abs(velocity), starting_tractive_effort)
-	
 	var braking_force: float
 	var is_stationary = is_zero_approx(velocity)
 	if is_stationary:
@@ -103,7 +102,6 @@ func _update_longitudinal(delta: float) -> float:
 	effective_force = total_force
 	
 	var acceleration = total_force / mass_kg
-	
 	
 	if !is_zero_approx(power_efficiency):
 		DebugLog.debug("Velocity ms-1", velocity, name)
