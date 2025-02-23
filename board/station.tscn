@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://c1ekx5gqohw36"]
+
+[ext_resource type="FontFile" uid="uid://j61um2uopue3" path="res://assets/fonts/Noto_Sans,Noto_Sans_Devanagari,Noto_Sans_Tamil/Noto_Sans/NotoSans-VariableFont_wdth,wght.ttf" id="1_kssru"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f1fdg"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ulat7"]
+material = SubResource("StandardMaterial3D_f1fdg")
+size = Vector3(0.8, 0.4, 0.05)
+
+[sub_resource type="FontVariation" id="FontVariation_ulat7"]
+base_font = ExtResource("1_kssru")
+variation_embolden = 0.8
+spacing_glyph = -4
+
+[sub_resource type="FontVariation" id="FontVariation_f1fdg"]
+spacing_glyph = -5
+
+[node name="Station" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_ulat7")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0.05)
+pixel_size = 0.002
+shaded = true
+modulate = Color(0, 0, 0, 1)
+text = "தாம்பரம்"
+font = SubResource("FontVariation_ulat7")
+font_size = 50
+outline_size = 0
+
+[node name="Label3D2" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05)
+pixel_size = 0.002
+shaded = true
+modulate = Color(0, 0, 0, 1)
+text = "ताम्बरम"
+font_size = 50
+outline_size = 0
+
+[node name="Label3D3" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125, 0.05)
+pixel_size = 0.002
+shaded = true
+modulate = Color(0, 0, 0, 1)
+text = "TAMBARAM"
+font = SubResource("FontVariation_f1fdg")
+font_size = 50
+outline_size = 0

@@ -35,8 +35,7 @@ func _physics_process(delta: float) -> void:
 	var net_forces = long_forces + coup_forces
 	var acceleration = net_forces / mass_kg
 	velocity += acceleration * delta
-	#velocity = max(velocity, 1e-6)
-	velocity = max(velocity, 0)
+	velocity = max(velocity, 1e-4)
 	progress += velocity * delta
 
 func _update_coupling_forces(delta: float) -> float:
@@ -48,13 +47,13 @@ func _update_coupling_forces(delta: float) -> float:
 	
 	# Calculate forces from the previous coach
 	if prev_coach:
-		var displacement = prev_coach.progress - progress - rest_length
+		var displacement = (prev_coach.global_position - global_position).length() - rest_length
 		var relative_velocity = velocity - prev_coach.velocity
 		force -= -k * displacement - c * relative_velocity
 	
 	# Calculate forces from the next coach
 	if next_coach:
-		var displacement = progress - next_coach.progress - rest_length
+		var displacement = (global_position - next_coach.global_position).length() - rest_length
 		var relative_velocity = next_coach.velocity - velocity
 		force += -k * displacement - c * relative_velocity
 	
