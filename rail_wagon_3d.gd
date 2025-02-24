@@ -1,8 +1,15 @@
+@tool
 extends PathFollow3D
 class_name RailWagon3D
 
-@export_range(0.0, 10e10, 1e-6, "suffix:kg") var mass_kg = 22000.0
-@export_range(0.0, 10e10, 1e-6, "suffix:hp") var power_output_hp = 6500.0
+@export_range(0.0, 10e10, 1e-6, "suffix:kg") var mass_kg = 123000.0
+@export_range(0.0, 10e10, 1e-6, "suffix:N") var weight_N = 0.0:
+	get:
+		return mass_kg * ACC_GRAVITY
+	set(value):
+		weight_N = value
+		mass_kg = value / ACC_GRAVITY
+@export_range(0.0, 10e10, 1e-6, "suffix:hp") var power_output_hp = 6350.0
 @export_range(0.0, 10e10, 1e-6, "suffix:kN") var starting_tractive_effort = 322000.0
 @export_range(0.0, 1.0, 1e-6) var power_efficiency = 0.8
 @export_range(0.0, 1.0, 1e-6) var brake_efficiency = 0.8
@@ -17,8 +24,12 @@ const ACC_GRAVITY = 9.81
 const rho = 1.225 # (Air density)
 const Cd = 1.2 # (0.8-1.2) (Coefficient of drag)
 const Crr = 0.002 # (0.001-0.002) Coefficient of rolling friction
+const HALF = 0.5
 
-var frontal_area = 13.4118 # (w*h)
+const C1 = 600
+const C2 = 0.1
+
+@export_range(0.0, 10e10, 1e-6, "suffix:m") var frontal_area = 13.4118 # (w*h)
 
 var throttle = 0.0
 var velocity = 0.0000001
@@ -27,50 +38,61 @@ var brake = 0.0
 var effective_force = 0.0
 
 func _ready():
+	if Engine.is_editor_hint():
+		return
 	Engine.set_physics_ticks_per_second(240)
 
 func _physics_process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
 	var long_forces = _update_longitudinal(delta)
-	var coup_forces = _update_coupling_forces(delta)
-	var net_forces = long_forces + coup_forces
-	var acceleration = net_forces / mass_kg
+	#var coup_forces = _update_coupling_forces(delta)
+	effective_force += long_forces
+	var acceleration = effective_force / mass_kg
+	DebugLog.debug("Acceleration ms-1", acceleration, name)
+	DebugLog.debug("Longi Forces kN", long_forces / 1000, name)
 	velocity += acceleration * delta
-	velocity = max(velocity, 1e-4)
+	velocity = max(velocity, 1e-5)
 	progress += velocity * delta
-
-func _update_coupling_forces(delta: float) -> float:
-	var force = 0.0
-	
-	var k = 500_000.0  # Reduced spring constant (N/m)
-	var c = 1_000.0    # Reduced damping coefficient (N·s/m)
-	var rest_length = 5.0  # Rest length of the coupler (m)
-	
-	# Calculate forces from the previous coach
-	if prev_coach:
-		var displacement = (prev_coach.global_position - global_position).length() - rest_length
-		var relative_velocity = velocity - prev_coach.velocity
-		force -= -k * displacement - c * relative_velocity
-	
-	# Calculate forces from the next coach
-	if next_coach:
-		var displacement = (global_position - next_coach.global_position).length() - rest_length
-		var relative_velocity = next_coach.velocity - velocity
-		force += -k * displacement - c * relative_velocity
-	
-	# Clamp velocity to prevent runaway values
-	#velocity = clamp(velocity, -100.0, 100.0)  # Adjust limits as needed
-	
-	## Update position (progress)
-	#progress += velocity * delta
+#
+#func _update_coupling_forces(delta: float) -> float:
+	#var force = 0.0
+#
+	#var k = 500_000.0  # Reduced spring constant (N/m)
+	#var c = 1_000.0    # Reduced damping coefficient (N·s/m)
+	#var rest_length = 5.0  # Rest length of the coupler (m)
 	#
-	# Debugging
-	DebugLog.debug("Net Force: ", force, name)
-	DebugLog.debug("Velocity: ", velocity, name)
-	return force
+	## Calculate forces from the previous coach
+	#if prev_coach:
+		#var disp_vec = (prev_coach.global_position - global_position)
+		#var displacement = disp_vec.dot(disp_vec.normalized()) - rest_length
+		#var relative_velocity = prev_coach.velocity - velocity
+		#DebugLog.debug("Prev Disp m", displacement, name)
+		#DebugLog.debug("Prev Rel Vel ms-1", relative_velocity, name)
+		#force -= -k * displacement - c * relative_velocity
+	#
+	## Calculate forces from the next coach
+	#if next_coach:
+		#var disp_vec = global_position - next_coach.global_position
+		#var displacement = (disp_vec).dot(disp_vec.normalized()) - rest_length
+		#var relative_velocity = velocity - next_coach.velocity
+		#DebugLog.debug("Next Disp m", displacement, name)
+		#DebugLog.debug("Next Rel Vel ms-1", relative_velocity, name)
+		#force += -k * displacement - c * relative_velocity
+#
+	## Clamp velocity to prevent runaway values
+	##velocity = clamp(velocity, -100.0, 100.0)  # Adjust limits as needed
+	#
+	### Update position (progress)
+	##progress += velocity * delta
+	##
+	## Debugging
+	##DebugLog.debug("Net Force: ", force, name)
+	#DebugLog.debug("Velocity: ", velocity, name)
+	#return force
 
 func _update_longitudinal(delta: float) -> float:
-	var weight = mass_kg * 9.81
-	var effective_power = (power_output_hp / 1.341) * power_efficiency * throttle * 1000
+	var effective_power = (power_output_hp / HP_TO_KW) * power_efficiency * throttle * KW_TO_W
 	var engine_force: float
 	if is_zero_approx(velocity):
 		# Static case: use maximum tractive effort at rest
@@ -85,27 +107,24 @@ func _update_longitudinal(delta: float) -> float:
 	else:
 		braking_force = braking_force_max * brake_efficiency * brake * signf(velocity)
 	
-	var rolling_resistance = 0.002 * mass_kg * 9.81 * signf(velocity) * int(!is_zero_approx(velocity))
-	var drag_resistance = 0.5 * 1.225 * 1.2 * 13.4118 * velocity
-	var grade_resistance = sin(get_height_gradient()) * weight
-	var radius_track = get_radius_of_curvature()
+	var rolling_resistance = Crr * mass_kg * ACC_GRAVITY * signf(velocity) * int(!is_zero_approx(velocity))
+	var drag_resistance = HALF * rho * Cd * frontal_area * velocity
+	var grade_resistance = sin(get_height_gradient()) * weight_N
+	var track_radius = get_radius_of_curvature()
 	var curve_resistance: float
-	if is_inf(radius_track):
+	if is_inf(track_radius):
 		curve_resistance = 0
 	else:
-		curve_resistance = 600 / radius_track
+		curve_resistance = 600 / track_radius
 	
 	var resistive_forces = rolling_resistance + drag_resistance + braking_force + grade_resistance + curve_resistance
 	
 	var total_force = engine_force - resistive_forces
-	effective_force = total_force
-	
-	var acceleration = total_force / mass_kg
 	
 	if !is_zero_approx(power_efficiency):
 		DebugLog.debug("Velocity ms-1", velocity, name)
 		DebugLog.debug("Velocity kmph", velocity * 3.6, name)
-		DebugLog.debug("Acceleration ms-2", acceleration, name)
+		#DebugLog.debug("Acceleration ms-2", acceleration, name)
 		DebugLog.debug("Throttle", throttle, name)
 		DebugLog.debug("Brake", brake, name)
 		DebugLog.debug("Engine Power kN", effective_power / 1000, name)
@@ -115,15 +134,15 @@ func _update_longitudinal(delta: float) -> float:
 		DebugLog.debug("Drag Resistance kN", drag_resistance / 1000, name)
 		DebugLog.debug("Roll Resistance kN", rolling_resistance / 1000, name)
 		DebugLog.debug("Height Angle rad", get_height_gradient(), name)
-		DebugLog.debug("Radius of Curvature m", radius_track, name)
+		DebugLog.debug("Radius of Curvature m", track_radius, name)
 		DebugLog.debug("Curvature resistance kN", curve_resistance / 1000, name)
-	return effective_force
+	return total_force
 
 
 func is_zero_approx_cmp(x: float, cmp: float) -> bool:
 	return abs(x) < cmp 
 
-func get_height_gradient(delta: float = 1e-02):
+func get_height_gradient(delta: float = 5e-01):
 	var path = get_parent() as Path3D
 	var curve = path.curve as Curve3D
 	
@@ -177,6 +196,9 @@ func get_radius_of_curvature() -> float:
 	return 1.0 / curvature
 
 func _input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
+
 	if event is InputEventKey:
 		if event.keycode == KEY_A and event.pressed:
 			throttle += 0.1

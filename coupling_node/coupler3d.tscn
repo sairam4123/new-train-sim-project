@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://drlx7etn4ig61"]
+
+[ext_resource type="Script" uid="uid://q6duif53tfrn" path="res://coupling_node/coupler3d.gd" id="1_fvknh"]
+
+[node name="Coupler3D" type="Node3D"]
+script = ExtResource("1_fvknh")

@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://trhss6uhisaj"]
+[gd_scene load_steps=13 format=3 uid="uid://trhss6uhisaj"]
 
+[ext_resource type="Texture2D" uid="uid://bisbw6gyk2ri2" path="res://icon.svg" id="1_036b0"]
 [ext_resource type="PackedScene" uid="uid://bnbl2yk81aghf" path="res://rail_path_3d.tscn" id="1_fj7yv"]
 [ext_resource type="Script" uid="uid://haityqetj72b" path="res://rail_wagon_3d.gd" id="2_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://dg0d23vdkllhp" path="res://engine.tscn" id="2_tlwt5"]
-[ext_resource type="Script" path="res://debug_label.gd" id="4_aqk2v"]
+[ext_resource type="Script" uid="uid://bexwge6ixmrj2" path="res://debug_label.gd" id="4_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://drlx7etn4ig61" path="res://coupling_node/coupler3d.tscn" id="5_dwbse"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tlwt5"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -20,6 +22,8 @@ glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cmany"]
 albedo_color = Color(0.23904, 0.24, 0.2256, 1)
+albedo_texture = ExtResource("1_036b0")
+uv1_triplanar = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_c6gwx"]
 material = SubResource("StandardMaterial3D_cmany")
@@ -53,22 +57,24 @@ auto_tangents_scale = 0.15
 bake_curvature = true
 
 [node name="Loco" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("next_coach")]
-transform = Transform3D(0.122323, -0.0336226, -0.991919, -0.0122773, 0.999284, -0.0353872, 0.992414, 0.0165066, 0.121825, -386.29, 1.76841, -412.496)
-progress = 20.0
+transform = Transform3D(-0.0066276, 0.00966252, -0.999927, -0.0152613, 0.999812, 0.00976294, 0.999857, 0.0153246, -0.00647904, -186.458, 5.23178, -408.356)
+progress = 220.0
 v_offset = 1.125
 script = ExtResource("2_aqk2v")
-mass_kg = 123000.0
-power_output_hp = 6350.0
+mass_kg = 123377.0
+weight_N = 1.21033e+06
 next_coach = NodePath("../Coach1")
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Loco"]
 remote_path = NodePath("../../../Train/Locomotive")
 
 [node name="Coach1" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach", "next_coach")]
-transform = Transform3D(0.17151, -0.0324331, -0.984645, -0.0105949, 0.999322, -0.0347629, 0.985124, 0.0163942, 0.171053, -391.232, 1.59284, -411.77)
-progress = 15.0
+transform = Transform3D(-0.00632909, 0.00892806, -0.99994, -0.0153286, 0.999821, 0.00902439, 0.99986, 0.0153845, -0.00619124, -191.459, 5.27879, -408.388)
+progress = 215.0
 v_offset = 1.125
 script = ExtResource("2_aqk2v")
+mass_kg = 39462.6
+weight_N = 387128.0
 power_output_hp = 0.0
 starting_tractive_effort = 0.0
 power_efficiency = 0.0
@@ -79,10 +85,12 @@ next_coach = NodePath("../Coach2")
 remote_path = NodePath("../../../Train/Coach")
 
 [node name="Coach2" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach", "next_coach")]
-transform = Transform3D(0.240774, -0.0303796, -0.970098, -0.00824401, 0.999376, -0.0333443, 0.970542, 0.0160256, 0.240381, -396.121, 1.42221, -410.753)
-progress = 10.0
+transform = Transform3D(-0.00599447, 0.00810219, -0.999942, -0.0153959, 0.999797, 0.00819401, 0.999859, 0.0154435, -0.0058688, -196.46, 5.32189, -408.418)
+progress = 210.0
 v_offset = 1.125
 script = ExtResource("2_aqk2v")
+mass_kg = 39462.6
+weight_N = 387128.0
 power_output_hp = 0.0
 starting_tractive_effort = 0.0
 power_efficiency = 0.0
@@ -92,36 +100,174 @@ next_coach = NodePath("../Coach3")
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach2"]
 remote_path = NodePath("../../../Train/Coach2")
 
-[node name="Coach3" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach")]
-transform = Transform3D(0.344054, -0.0268307, -0.93856, -0.00485751, 0.999493, -0.0303548, 0.938934, 0.0150024, 0.34376, -400.9, 1.26217, -409.312)
-progress = 5.0
+[node name="Coach3" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach", "next_coach")]
+transform = Transform3D(-0.00561705, 0.00716628, -0.999952, -0.0154633, 0.999813, 0.00725264, 0.999861, 0.0155029, -0.0055054, -201.46, 5.36056, -408.446)
+progress = 205.0
 v_offset = 1.125
 script = ExtResource("2_aqk2v")
+mass_kg = 39462.6
+weight_N = 387128.0
 power_output_hp = 0.0
 starting_tractive_effort = 0.0
 power_efficiency = 0.0
 prev_coach = NodePath("../Coach2")
+next_coach = NodePath("../Coach4")
+frontal_area = 13.0864
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach3"]
 remote_path = NodePath("../../../Train/Coach3")
 
+[node name="Coach4" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach", "next_coach")]
+transform = Transform3D(-0.00518647, 0.00609426, -0.999961, -0.0155307, 0.99982, 0.00617437, 0.999862, 0.0155617, -0.00509108, -206.461, 5.3942, -408.473)
+progress = 200.0
+v_offset = 1.125
+script = ExtResource("2_aqk2v")
+mass_kg = 39462.6
+weight_N = 387128.0
+power_output_hp = 0.0
+starting_tractive_effort = 0.0
+power_efficiency = 0.0
+prev_coach = NodePath("../Coach3")
+next_coach = NodePath("../Coach5")
+frontal_area = 13.0864
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach4"]
+remote_path = NodePath("../../../Train/Coach4")
+
+[node name="Coach5" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach", "next_coach")]
+transform = Transform3D(-0.00468847, 0.00485143, -0.999971, -0.015598, 0.999826, 0.00492419, 0.999864, 0.0156201, -0.00461215, -211.463, 5.42203, -408.497)
+progress = 195.0
+v_offset = 1.125
+script = ExtResource("2_aqk2v")
+mass_kg = 39462.6
+weight_N = 387128.0
+power_output_hp = 0.0
+starting_tractive_effort = 0.0
+power_efficiency = 0.0
+prev_coach = NodePath("../Coach4")
+next_coach = NodePath("../Coach6")
+frontal_area = 13.0864
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach5"]
+remote_path = NodePath("../../../Train/Coach5")
+
+[node name="Coach6" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach", "next_coach")]
+transform = Transform3D(-0.00410446, 0.00338903, -0.999979, -0.0156649, 0.99983, 0.00345305, 0.999865, 0.0156783, -0.00405083, -216.464, 5.44309, -408.518)
+progress = 190.0
+v_offset = 1.125
+script = ExtResource("2_aqk2v")
+mass_kg = 39462.6
+weight_N = 387128.0
+power_output_hp = 0.0
+starting_tractive_effort = 0.0
+power_efficiency = 0.0
+prev_coach = NodePath("../Coach5")
+next_coach = NodePath("../Coach7")
+frontal_area = 13.0864
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach6"]
+remote_path = NodePath("../../../Train/Coach6")
+
+[node name="Coach7" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach", "next_coach")]
+transform = Transform3D(-0.0034066, 0.00163589, -0.999987, -0.0157312, 0.999834, 0.00168935, 0.999867, 0.0157363, -0.00338043, -221.466, 5.45609, -408.537)
+progress = 185.0
+v_offset = 1.125
+script = ExtResource("2_aqk2v")
+mass_kg = 39462.6
+weight_N = 387128.0
+power_output_hp = 0.0
+starting_tractive_effort = 0.0
+power_efficiency = 0.0
+prev_coach = NodePath("../Coach6")
+next_coach = NodePath("../Coach8")
+frontal_area = 13.0864
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach7"]
+remote_path = NodePath("../../../Train/Coach7")
+
+[node name="Coach8" type="PathFollow3D" parent="RailPath" node_paths=PackedStringArray("prev_coach")]
+transform = Transform3D(-0.0042376, -0.000528585, -0.999984, -0.0157965, 0.999834, -0.000461603, 0.999863, 0.0157938, -0.0042454, -226.469, 5.45933, -408.553)
+progress = 180.0
+v_offset = 1.125
+script = ExtResource("2_aqk2v")
+mass_kg = 39462.6
+weight_N = 387128.0
+power_output_hp = 0.0
+starting_tractive_effort = 0.0
+power_efficiency = 0.0
+prev_coach = NodePath("../Coach7")
+frontal_area = 13.0864
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="RailPath/Coach8"]
+remote_path = NodePath("../../../Train/Coach8")
+
 [node name="Train" type="Node3D" parent="."]
 
 [node name="Locomotive" parent="Train" instance=ExtResource("2_tlwt5")]
-transform = Transform3D(0.122323, -0.0336226, -0.991919, -0.0122773, 0.999284, -0.0353872, 0.992414, 0.0165066, 0.121825, -386.29, 1.77841, -412.496)
+transform = Transform3D(-0.0066276, 0.00966252, -0.999927, -0.0152613, 0.999812, 0.00976294, 0.999857, 0.0153246, -0.00647904, -186.458, 5.24178, -408.356)
 
 [node name="Coach" parent="Train" instance=ExtResource("2_tlwt5")]
-transform = Transform3D(0.17151, -0.0324331, -0.984645, -0.0105949, 0.999322, -0.0347629, 0.985124, 0.0163942, 0.171053, -391.232, 1.60284, -411.77)
+transform = Transform3D(-0.00632909, 0.00892806, -0.99994, -0.0153286, 0.999821, 0.00902439, 0.99986, 0.0153845, -0.00619124, -191.459, 5.28879, -408.388)
 
 [node name="Coach2" parent="Train" instance=ExtResource("2_tlwt5")]
-transform = Transform3D(0.240774, -0.0303796, -0.970098, -0.00824401, 0.999376, -0.0333443, 0.970542, 0.0160256, 0.240381, -396.121, 1.43221, -410.753)
+transform = Transform3D(-0.00599447, 0.00810219, -0.999942, -0.0153959, 0.999797, 0.00819401, 0.999859, 0.0154435, -0.0058688, -196.46, 5.33189, -408.418)
 
 [node name="Coach3" parent="Train" instance=ExtResource("2_tlwt5")]
-transform = Transform3D(0.344054, -0.0268307, -0.93856, -0.00485751, 0.999493, -0.0303548, 0.938934, 0.0150024, 0.34376, -400.9, 1.27217, -409.312)
+transform = Transform3D(-0.00561705, 0.00716628, -0.999952, -0.0154633, 0.999813, 0.00725264, 0.999861, 0.0155029, -0.0055054, -201.46, 5.37056, -408.446)
+
+[node name="Coach4" parent="Train" instance=ExtResource("2_tlwt5")]
+transform = Transform3D(-0.00518647, 0.00609426, -0.999961, -0.0155307, 0.99982, 0.00617437, 0.999862, 0.0155617, -0.00509108, -206.461, 5.4042, -408.473)
+
+[node name="Coach5" parent="Train" instance=ExtResource("2_tlwt5")]
+transform = Transform3D(-0.00468847, 0.00485143, -0.999971, -0.015598, 0.999826, 0.00492419, 0.999864, 0.0156201, -0.00461215, -211.463, 5.43203, -408.497)
+
+[node name="Coach6" parent="Train" instance=ExtResource("2_tlwt5")]
+transform = Transform3D(-0.00410446, 0.00338903, -0.999979, -0.0156649, 0.99983, 0.00345305, 0.999865, 0.0156783, -0.00405083, -216.464, 5.45309, -408.518)
+
+[node name="Coach7" parent="Train" instance=ExtResource("2_tlwt5")]
+transform = Transform3D(-0.0034066, 0.00163589, -0.999987, -0.0157312, 0.999834, 0.00168935, 0.999867, 0.0157363, -0.00338043, -221.466, 5.46609, -408.537)
+
+[node name="Coach8" parent="Train" instance=ExtResource("2_tlwt5")]
+transform = Transform3D(-0.0042376, -0.000528585, -0.999984, -0.0157965, 0.999834, -0.000461603, 0.999863, 0.0157938, -0.0042454, -226.469, 5.46933, -408.553)
+
+[node name="CouplingNodes" type="Node3D" parent="."]
+
+[node name="Coupler3D" parent="CouplingNodes" node_paths=PackedStringArray("wagon_a", "wagon_b") instance=ExtResource("5_dwbse")]
+wagon_a = NodePath("../../RailPath/Loco")
+wagon_b = NodePath("../../RailPath/Coach1")
+
+[node name="Coupler3D2" parent="CouplingNodes" node_paths=PackedStringArray("wagon_a", "wagon_b") instance=ExtResource("5_dwbse")]
+wagon_a = NodePath("../../RailPath/Coach1")
+wagon_b = NodePath("../../RailPath/Coach2")
+
+[node name="Coupler3D3" parent="CouplingNodes" node_paths=PackedStringArray("wagon_a", "wagon_b") instance=ExtResource("5_dwbse")]
+wagon_a = NodePath("../../RailPath/Coach2")
+wagon_b = NodePath("../../RailPath/Coach3")
+
+[node name="Coupler3D4" parent="CouplingNodes" node_paths=PackedStringArray("wagon_a", "wagon_b") instance=ExtResource("5_dwbse")]
+wagon_a = NodePath("../../RailPath/Coach3")
+wagon_b = NodePath("../../RailPath/Coach4")
+
+[node name="Coupler3D5" parent="CouplingNodes" node_paths=PackedStringArray("wagon_a", "wagon_b") instance=ExtResource("5_dwbse")]
+wagon_a = NodePath("../../RailPath/Coach4")
+wagon_b = NodePath("../../RailPath/Coach5")
+
+[node name="Coupler3D6" parent="CouplingNodes" node_paths=PackedStringArray("wagon_a", "wagon_b") instance=ExtResource("5_dwbse")]
+wagon_a = NodePath("../../RailPath/Coach5")
+wagon_b = NodePath("../../RailPath/Coach6")
+
+[node name="Coupler3D7" parent="CouplingNodes" node_paths=PackedStringArray("wagon_a", "wagon_b") instance=ExtResource("5_dwbse")]
+wagon_a = NodePath("../../RailPath/Coach6")
+wagon_b = NodePath("../../RailPath/Coach7")
+
+[node name="Coupler3D8" parent="CouplingNodes" node_paths=PackedStringArray("wagon_a", "wagon_b") instance=ExtResource("5_dwbse")]
+wagon_a = NodePath("../../RailPath/Coach7")
+wagon_b = NodePath("../../RailPath/Coach8")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Control" type="Control" parent="CanvasLayer"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
