@@ -45,16 +45,27 @@ func _ready():
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
+	#print("Coach print", name)
 	var long_forces = _update_longitudinal(delta)
 	#var coup_forces = _update_coupling_forces(delta)
 	effective_force += long_forces
-	var acceleration = effective_force / mass_kg
-	DebugLog.debug("Acceleration ms-1", acceleration, name)
-	DebugLog.debug("Longi Forces kN", long_forces / 1000, name)
-	velocity += acceleration * delta
-	velocity = max(velocity, 1e-5)
-	progress += velocity * delta
-#
+	#var acceleration = effective_force / mass_kg
+	#DebugLog.debug("Acceleration ms-1", acceleration, name)
+	#DebugLog.debug("Longi Forces kN", long_forces / 1000, name)
+	#velocity += acceleration * delta
+	#velocity = max(velocity, 1e-5)
+	
+	(func ():
+		var acceleration = effective_force / mass_kg
+		DebugLog.debug("Acceleration ms-1", acceleration, name)
+		DebugLog.debug("Longi Forces kN", long_forces / 1000, name)
+		velocity += acceleration * delta
+		velocity = max(velocity, 1e-5)
+		progress += velocity * delta
+		effective_force = 0
+		#print("Force is reset")
+	).call_deferred()
+
 #func _update_coupling_forces(delta: float) -> float:
 	#var force = 0.0
 #
